@@ -10,6 +10,9 @@ export function getMusic(limit=10){
     return axios.get (`${baseUrl}/personalized?limit=${limit}`);
 }
 
+export function getMusicList(id){
+    return axios.get(`${baseUrl}/playlist/detail?id=${id}`);
+}
 
 // 对外抛出
-export default { getBanner,getMusic }
+export default { getBanner,getMusic,getMusicList }
