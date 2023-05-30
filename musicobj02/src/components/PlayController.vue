@@ -1,23 +1,25 @@
 <template>
     <div class="playController">
         <div class="left">
-            <img :src="playlist[playCurrentIndex].al.picUrl" alt="">
+            <img :src="playlist[playCurrentIndex].al.picUrl" alt="" @click=" show=!show">
             <div class="content">
                 <div class="title">{{playlist[playCurrentIndex].name}}</div>
                 <div class="tips">横划可以切换上下首</div>
             </div>
         </div>
         <div class="right">
-            <svg class="icon" aria-hidden="true" @click="kai">
+            <svg v-if="abc" class="icon" aria-hidden="true" @click="play">
                 <use xlink:href="#icon-bofang1"></use>
             </svg>
-            <svg class="icon" aria-hidden="true" @click="ting">
+            <svg v-else class="icon" aria-hidden="true" @click="play">
                 <use xlink:href="#icon-iconstop"></use>
             </svg>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-liebiao1"></use>
             </svg>
         </div>
+        <!-- 歌曲详情 -->
+        <play-music v-show="show" :abc="abc" :play="play" :playDetail="playlist[playCurrentIndex]" @back="show=!show"></play-music>
         <!-- 如何获取播放歌曲的mps地址 -->
         <!-- controls audio标签属性，一般不显示 -->
         <!-- audio paly（）播放音乐 pause（）暂停音乐 -->
@@ -27,19 +29,39 @@
 
 <script>
 import { mapState } from 'vuex';
+import  playMusic  from "@/components/PlayMusic.vue"
 export default {
     name: "playcontroller",
+    data(){
+        return{
+            abc:true,  //当前音乐是否处于暂停状态
+            show:false //歌曲详情是否显示
+        }
+    },
+    components:{
+        playMusic
+    },
     computed:{
         ...mapState(["playlist","playCurrentIndex"]) //获取正在播放曲列表，以及下标
     },
     methods:{
-        kai(){
-            // this.$refs.audio获取audio标签
-            this.$refs.audio.play();
-        },
-        ting(){
-            this.$refs.audio.pause();
+        play(){
+            if(this.$refs.audio.paused){  //当前audio处于暂停状态
+                this.$refs.audio.play();  //this.$refs.audio 获取audio标签
+                this.abc = false;
+            }
+            else{  //当前audio处于播放状态
+                this.$refs.audio.pause();
+                this.abc = true;
+            }
         }
+        // kai(){
+        //     // this.$refs.audio获取audio标签
+        //     this.$refs.audio.play();
+        // },
+        // ting(){
+        //     this.$refs.audio.pause();
+        // }
     }
 }
 </script>

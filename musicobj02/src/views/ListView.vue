@@ -13,6 +13,7 @@ import { onMounted, reactive } from 'vue';
 import { getMusicList } from '@/api/index.js';
 import ListviewTop from '@/components/ListViewTop.vue';
 import PlayList from '@/components/PlayList.vue';
+import store from '@/store';
 export default {
     name:"listview",
     setup(){
@@ -30,6 +31,9 @@ export default {
             var res = await getMusicList(id); //发送axios请求，获取歌单详情
             music.playlist = res.data.playlist
             console.log(music.playlist);
+
+            //
+            store.commit("setPlayList",music.playlist.tracks);
         })
         return{music}
     },
