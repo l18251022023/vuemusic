@@ -23,7 +23,7 @@
             <img class="playImg" :src="playDetail.al.picUrl" alt="">
         </div>
         <div v-else class="playLyric" @click="isLyric=!isLyric">
-            离离原上草，一岁一枯荣，野火烧不尽，春风吹又生
+            {{ lyric }}
         </div>
         <div  class="playFooter" >
             <svg class="icon" aria-hidden="true">
@@ -56,11 +56,11 @@ export default{
     props:["abc","play","playDetail"],
     data(){
         return{
-            isLyric:"false" 
+            isLyric:"true" 
         }
     },
     computed:{
-        ...mapState(["playCurrentIndex","playlist"]) //当前播放音乐下标 列表
+        ...mapState(["playCurrentIndex","playlist","lyric"]) //当前播放音乐下标 列表
     },
     methods:{
         tabMusic(num){
